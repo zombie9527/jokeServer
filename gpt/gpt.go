@@ -75,7 +75,7 @@ func Completions(msg string) (string, error) {
 		return "", err
 	}
 
-	apiKey := "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"
+	apiKey := "apik"
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("Authorization", "Bearer "+apiKey)
 	client := &http.Client{Timeout: 30 * time.Second}
