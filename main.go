@@ -5,6 +5,8 @@ import (
 	"io/ioutil"
 	"net/http"
 	"strconv"
+
+	"main.go/gpt"
 )
 
 type JuheRequest struct {
@@ -31,7 +33,7 @@ var page int = 1
 var current = 0
 
 const (
-	JuheKey  = "juhekey"
+	JuheKey  = "4d6e212ec97bd75d2ce79170d4c5be44"
 	pageSize = 20
 )
 
@@ -85,7 +87,18 @@ func getJoke(w http.ResponseWriter, req *http.Request) {
 
 }
 
+func gptChat(w http.ResponseWriter, req *http.Request) {
+	defer req.Body.Close()
+	b, _ := ioutil.ReadAll(req.Body)
+	values := string(b)
+	reply, _ := gpt.Completions(values)
+	w.Write([]byte(reply))
+	// w.Write([]byte(values))
+
+}
+
 func main() {
 	http.HandleFunc("/j", getJoke)
+	http.HandleFunc("/g", gptChat)
 	http.ListenAndServe(":8090", nil)
 }
